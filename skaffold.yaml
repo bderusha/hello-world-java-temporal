@@ -1,0 +1,13 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+metadata:
+  name: hello-world-java
+build:
+  artifacts:
+  - image: hello-world
+    jib: { }
+
+manifests:
+  rawYaml:
+  - config/hello-world.yml
+
