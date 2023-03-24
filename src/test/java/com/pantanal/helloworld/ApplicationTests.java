@@ -1,4 +1,4 @@
-package com.b3.helloworld;
+package com.pantanal.helloworld;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;

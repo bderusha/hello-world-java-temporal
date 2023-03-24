@@ -10,4 +10,11 @@ build:
 manifests:
   rawYaml:
   - config/hello-world.yml
+  - config/temporal-worker.yml
 
+portForward:
+  - resourceType: service
+    resourceName: temporal-hello-world-web
+    namespace: default
+    port: 8080
+    localPort: 9000
