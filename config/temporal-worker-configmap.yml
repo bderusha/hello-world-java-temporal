@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  port: "8081"
+  worker: "true"
+metadata:
+  name: temporal-worker-configmap

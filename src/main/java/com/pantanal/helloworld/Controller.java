@@ -5,11 +5,13 @@ import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.temporal.client.WorkflowOptions;
+
+import java.util.Optional;
 
 @RestController
 public class Controller {
@@ -21,22 +23,16 @@ public class Controller {
 
     @Value("${temporal.server.url}")
     private String temporalServerUrl;
+//
 
-    private WorkflowClient client;
-
-    public Controller()
-    {
+    @GetMapping({"/{message}", "/"})
+    String HelloWorld(@PathVariable(name = "message", required = false) Optional<String> message){
         WorkflowServiceStubs service =
                 WorkflowServiceStubs.newServiceStubs(
                         WorkflowServiceStubsOptions.newBuilder()
                                 .setTarget(this.temporalServerUrl).build());
 
-        this.client = WorkflowClient.newInstance(service);
-    }
-
-    @GetMapping("/")
-    String HelloWorld(){
-        String msg = "Hello World";
+        WorkflowClient client = WorkflowClient.newInstance(service);
         // Create the workflow client stub. It is used to start our workflow execution.
         HelloActivity.GreetingWorkflow workflow =
                 client.newWorkflowStub(
@@ -46,7 +42,7 @@ public class Controller {
                                 .setTaskQueue(TASK_QUEUE)
                                 .build());
 
-        String greeting = workflow.getGreeting("World");
+        String greeting = workflow.getGreeting(message.orElse("World"));
         return greeting;
     }
 }

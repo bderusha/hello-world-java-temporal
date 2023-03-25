@@ -9,8 +9,12 @@ build:
 
 manifests:
   rawYaml:
-  - config/hello-world.yml
-  - config/temporal-worker.yml
+    - config/temporal-worker-configmap.yml
+    - config/hello-world.yml
+    - config/temporal-worker.yml
+
+deploy:
+  kubectl: { }
 
 portForward:
   - resourceType: service

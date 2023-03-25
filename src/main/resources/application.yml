@@ -1,0 +1,9 @@
+temporal:
+  server:
+    hostname: 10.244.0.5
+    port: 7233
+    url: "${temporal.server.hostname}:${temporal.server.port}"
+  workflow:
+    taskqueue: MAIN_TASK_QUEUE
+    id: HelloActivityWorkflow
+

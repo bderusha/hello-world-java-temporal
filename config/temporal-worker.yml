@@ -17,11 +17,19 @@ spec:
       containers:
         - name: temporal-worker
           image: hello-world
-          env:
-            - name: worker
-              value: true
           ports:
             - containerPort: 8081
+          env:
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: temporal-worker-configmap
+                  key: port
+            - name: WORKER
+              valueFrom:
+                configMapKeyRef:
+                  name: temporal-worker-configmap
+                  key: worker
 ---
 apiVersion: v1
 kind: Service
