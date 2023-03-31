@@ -7,6 +7,7 @@ import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.temporal.client.WorkflowOptions;
@@ -23,7 +24,6 @@ public class Controller {
 
     @Value("${temporal.server.url}")
     private String temporalServerUrl;
-//
 
     @GetMapping({"/{message}", "/"})
     String HelloWorld(@PathVariable(name = "message", required = false) Optional<String> message){
@@ -44,5 +44,10 @@ public class Controller {
 
         String greeting = workflow.getGreeting(message.orElse("World"));
         return greeting;
+    }
+
+    @GetMapping("favicon.ico")
+    @ResponseBody
+    void returnNoFavicon() {
     }
 }

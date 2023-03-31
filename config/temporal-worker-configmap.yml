@@ -4,4 +4,4 @@ data:
   port: "8081"
   worker: "true"
 metadata:
-  name: temporal-worker-configmap
+  name: hw-worker-configmap

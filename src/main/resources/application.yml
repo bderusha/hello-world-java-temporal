@@ -1,7 +1,7 @@
 temporal:
   server:
-    hostname: ${TEMPORAL_HELLO_WORLD_FRONTEND_SERVICE_HOST}
-    port: ${TEMPORAL_HELLO_WORLD_FRONTEND_SERVICE_PORT}
+    hostname: ${TEMPORAL_FRONTEND_SERVICE_HOST}
+    port: ${TEMPORAL_FRONTEND_SERVICE_PORT}
     url: "${temporal.server.hostname}:${temporal.server.port}"
   workflow:
     taskqueue: MAIN_TASK_QUEUE

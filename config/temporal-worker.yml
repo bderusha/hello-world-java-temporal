@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: temporal-worker
+  name: hw-worker
   labels:
-    app: temporal-worker
+    app: hw-worker
 spec:
   selector:
     matchLabels:
-      app: temporal-worker
+      app: hw-worker
   progressDeadlineSeconds: 60
   template:
     metadata:
       labels:
-        app: temporal-worker
+        app: hw-worker
     spec:
       containers:
-        - name: temporal-worker
+        - name: hw-worker
           image: hello-world
           ports:
             - containerPort: 8081
@@ -23,21 +23,21 @@ spec:
             - name: SERVER_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: temporal-worker-configmap
+                  name: hw-worker-configmap
                   key: port
             - name: WORKER
               valueFrom:
                 configMapKeyRef:
-                  name: temporal-worker-configmap
+                  name: hw-worker-configmap
                   key: worker
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: temporal-worker
+  name: hw-worker
 spec:
   type: NodePort
   ports:
     - port: 8081
   selector:
-    app: temporal-worker
+    app: hw-worker
