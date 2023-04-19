@@ -1,7 +1,7 @@
 temporal:
   server:
-    hostname: ${TEMPORAL_FRONTEND_SERVICE_HOST}
-    port: ${TEMPORAL_FRONTEND_SERVICE_PORT}
+    hostname: temporal.temporal.svc.cluster.local
+    port: 7233
     url: "${temporal.server.hostname}:${temporal.server.port}"
   workflow:
     taskqueue: MAIN_TASK_QUEUE

@@ -1,0 +1,129 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-mysql-es.yml -o k8s/temporal-mysql-es.yaml
+    kompose.version: 1.26.1 (1b040dd2)
+  creationTimestamp: "2023-04-19T17:58:41Z"
+  generateName: elasticsearch-d8fd56bd7-
+  labels:
+    io.kompose.network/temporal-network: "true"
+    io.kompose.service: elasticsearch
+    pod-template-hash: d8fd56bd7
+  name: elasticsearch-d8fd56bd7-sxsdd
+  namespace: temporal
+  ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: elasticsearch-d8fd56bd7
+      uid: ef9d5101-40aa-4bc7-b56f-0071c1e71cd3
+  resourceVersion: "1524"
+  uid: 69e2ef06-c294-4f07-ba99-c983df2433a6
+spec:
+  containers:
+    - env:
+        - name: ES_JAVA_OPTS
+          value: -Xms256m -Xmx256m
+        - name: cluster.routing.allocation.disk.threshold_enabled
+          value: "true"
+        - name: cluster.routing.allocation.disk.watermark.flood_stage
+          value: 128mb
+        - name: cluster.routing.allocation.disk.watermark.high
+          value: 256mb
+        - name: cluster.routing.allocation.disk.watermark.low
+          value: 512mb
+        - name: discovery.type
+          value: single-node
+        - name: xpack.security.enabled
+          value: "false"
+      image: elasticsearch:7.16.2
+      imagePullPolicy: IfNotPresent
+      name: temporal-elasticsearch
+      ports:
+        - containerPort: 9200
+          protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: kube-api-access-zw5vb
+          readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: false
+  nodeName: kind-control-plane
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+  volumes:
+    - name: kube-api-access-zw5vb
+      projected:
+        defaultMode: 420
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              items:
+                - key: ca.crt
+                  path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+                - fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+                  path: namespace
+status:
+  conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:58:41Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T18:00:30Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T18:00:30Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:58:41Z"
+      status: "True"
+      type: PodScheduled
+  containerStatuses:
+    - containerID: containerd://cb994de67354f162235be9eb0527a42399a2a254c71e8c157de60f199acf0b6a
+      image: docker.io/library/elasticsearch:7.16.2
+      imageID: docker.io/library/elasticsearch@sha256:fe7ae76ec33e1222ece5216e3a9c6346999a73d3fb65256abb01638758db4b5d
+      lastState: {}
+      name: temporal-elasticsearch
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-04-19T18:00:29Z"
+  hostIP: 172.20.0.2
+  phase: Running
+  podIP: 10.244.0.5
+  podIPs:
+    - ip: 10.244.0.5
+  qosClass: BestEffort
+  startTime: "2023-04-19T17:58:41Z"

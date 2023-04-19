@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-mysql-es.yml -o k8s/temporal-mysql-es.yaml
+    kompose.version: 1.26.1 (1b040dd2)
+  creationTimestamp: "2023-04-19T17:58:42Z"
+  generateName: temporal-web-5db8f5d978-
+  labels:
+    io.kompose.network/temporal-network: "true"
+    io.kompose.service: temporal-web
+    pod-template-hash: 5db8f5d978
+  name: temporal-web-5db8f5d978-9d62l
+  namespace: temporal
+  ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: temporal-web-5db8f5d978
+      uid: c629095a-7bf8-42fd-9c7d-5bb43cd93a4e
+  resourceVersion: "1625"
+  uid: d64a5e63-9573-4c20-87be-d62f87ced5ea
+spec:
+  containers:
+    - env:
+        - name: TEMPORAL_GRPC_ENDPOINT
+          value: temporal:7233
+      image: temporalio/web:1.15.0
+      imagePullPolicy: IfNotPresent
+      name: temporal-web
+      ports:
+        - containerPort: 8088
+          protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: kube-api-access-zc84z
+          readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: false
+  nodeName: kind-control-plane
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+  volumes:
+    - name: kube-api-access-zc84z
+      projected:
+        defaultMode: 420
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              items:
+                - key: ca.crt
+                  path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+                - fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+                  path: namespace
+status:
+  conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:58:42Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T18:01:38Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T18:01:38Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:58:42Z"
+      status: "True"
+      type: PodScheduled
+  containerStatuses:
+    - containerID: containerd://9a8651898f05dc43d94feec6c492d2d954757f225b94e4d6a2a22ca17c4c5e91
+      image: docker.io/temporalio/web:1.15.0
+      imageID: docker.io/temporalio/web@sha256:bf25646809095406891dc9f113b799455211d4a4449766b965066308d9c29f95
+      lastState: {}
+      name: temporal-web
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-04-19T18:01:38Z"
+  hostIP: 172.20.0.2
+  phase: Running
+  podIP: 10.244.0.8
+  podIPs:
+    - ip: 10.244.0.8
+  qosClass: BestEffort
+  startTime: "2023-04-19T17:58:42Z"

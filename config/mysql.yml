@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-mysql-es.yml -o k8s/temporal-mysql-es.yaml
+    kompose.version: 1.26.1 (1b040dd2)
+  creationTimestamp: "2023-04-19T17:58:41Z"
+  generateName: mysql-697c6d5c5b-
+  labels:
+    io.kompose.network/temporal-network: "true"
+    io.kompose.service: mysql
+    pod-template-hash: 697c6d5c5b
+  name: mysql-697c6d5c5b-vmrrp
+  namespace: temporal
+  ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: mysql-697c6d5c5b
+      uid: c9315896-712b-4cd1-a57b-2e53fa1eb3cc
+  resourceVersion: "1428"
+  uid: 92744816-08f8-4b59-a496-83604590178f
+spec:
+  containers:
+    - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+      image: mysql:8
+      imagePullPolicy: IfNotPresent
+      name: temporal-mysql
+      ports:
+        - containerPort: 3306
+          protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: kube-api-access-zkrpj
+          readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: false
+  nodeName: kind-control-plane
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+  volumes:
+    - name: kube-api-access-zkrpj
+      projected:
+        defaultMode: 420
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              items:
+                - key: ca.crt
+                  path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+                - fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+                  path: namespace
+status:
+  conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:58:41Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:59:16Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:59:16Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2023-04-19T17:58:41Z"
+      status: "True"
+      type: PodScheduled
+  containerStatuses:
+    - containerID: containerd://db6d5f7b5c7a47cc677610a8f8cdc7cc20abec592ad9cd57ecc1a91aa18a0a8e
+      image: docker.io/library/mysql:8
+      imageID: docker.io/library/mysql@sha256:a43f6e7e7f3a5e5b90f857fbed4e3103ece771b19f0f75880f767cf66bbb6577
+      lastState: {}
+      name: temporal-mysql
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2023-04-19T17:59:16Z"
+  hostIP: 172.20.0.2
+  phase: Running
+  podIP: 10.244.0.6
+  podIPs:
+    - ip: 10.244.0.6
+  qosClass: BestEffort
+  startTime: "2023-04-19T17:58:41Z"

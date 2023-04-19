@@ -12,6 +12,7 @@ manifests:
     - config/temporal-worker-configmap.yml
     - config/hello-world.yml
     - config/temporal-worker.yml
+    - config/maru.yml
 
 deploy:
   kubectl: { }
@@ -19,6 +20,6 @@ deploy:
 portForward:
   - resourceType: service
     resourceName: temporal-web
-    namespace: default
-    port: 8080
-    localPort: 9000
+    namespace: temporal
+    port: 8088
+    localPort: 8088

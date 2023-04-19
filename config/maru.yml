@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maru
+  labels:
+    app: maru
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maru
+  progressDeadlineSeconds: 60
+  template:
+    metadata:
+      labels:
+        app: maru
+    spec:
+      containers:
+        - name: maru
+          image: ghcr.io/temporalio/maru:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: NAMESPACE
+              value: default
+            - name: FRONTEND_ADDRESS
+              value: temporal.temporal.svc.cluster.local:7233
+            - name: RUN_WORKERS
+              value: bench
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: maru
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9090
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app: maru
